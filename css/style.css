@@ -92,7 +92,7 @@ h2 {
 }
 
 .stack-item-green,
-.stack-item-red,
+.stack-item-orange,
 .stack-item-blue {
     width: 40px;
     height: 40px;
@@ -106,8 +106,8 @@ h2 {
     border-radius: 50%;
 }
 
-.stack-item-red {
-    background-color: red;
+.stack-item-orange {
+    background-color: orange;
 }
 
 .stack-item-blue {
