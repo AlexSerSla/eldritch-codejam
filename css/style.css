@@ -1,0 +1,137 @@
+body {  
+    min-width: 380px;
+    min-height: 100vh;
+    margin: 0;
+    background: url("../assets/home.png") center/cover, rgba(0, 0, 0, 0.5);
+    background-blend-mode: multiply;
+    transition: background-image 1s ease-in-out;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+h2 {
+    margin: 5px;
+
+    color: white;
+}
+
+/*
+.container {
+    min-height: 100%;
+    width: 100%;
+}*/
+
+.bosses-card {
+    width: 100%;
+    min-height: 30vh;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.card-img {
+    width: 20%;   
+    background: none; 
+}
+
+.card-img:hover {
+    border: 1px solid red;
+}
+
+.card-img:active {
+    border: 1px solid red;
+}
+
+.azathoth-card {
+    background-image: url(../assets/Ancients/Azathoth.png);
+    background-repeat: round;   
+}
+
+.cthulthu-card {
+    background-image: url(../assets/Ancients/Cthulthu.png);
+    background-repeat: round;   
+}
+
+.iogSothoth-card {
+    background-image: url(../assets/Ancients/IogSothoth.png);
+    background-repeat: round;   
+}
+
+.shubNiggurath-card {
+    background-image: url(../assets/Ancients/ShubNiggurath.png);
+    background-repeat: round;   
+}
+
+.levels {
+    margin: 10px auto;
+}
+
+.btn {
+    margin: auto 10px;
+}
+
+.btn:active {
+    border: 1px solid red;
+}
+
+.pack-card {
+    width: 100%;
+    min-height: 35vh;
+
+    display: flex;
+    justify-content: space-around;
+}
+
+.stack {
+    min-width: 150px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stack-item-green,
+.stack-item-red,
+.stack-item-blue {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: green;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.stack-item-red {
+    background-color: red;
+}
+
+.stack-item-blue {
+    background-color: blue;
+}
+
+.close-card-btn {
+    height: 80%;
+    width: 285px;
+
+    background: none;
+    background: url(../assets/mythicCardBackground.png);
+    background-repeat: round;
+}
+
+.close-card-btn:hover {
+    border: 1px solid red;
+}
+
+.open-card{
+    height: 80%;
+    width: 285px;
+
+    background: none;
+    background-repeat: round;
+}
+
