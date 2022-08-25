@@ -5,6 +5,12 @@ import blueCards from '../data/mythicCards/blue/index.js';
 import orangeCards from '../data/mythicCards/brown/index.js';
 import greenCards from '../data/mythicCards/green/index.js';
 
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
+}
+
 function severalRandom(min, max, num) {
       var i, arr = [], res = [];
       for (i = min; i <= max; i++ ) arr.push(i);
@@ -27,8 +33,6 @@ function getStackRandomCards(stackCards, num) {
 
 function changeBoss (numOfBoss, bossesData) {
   return bossesData[numOfBoss];
-
-
 }
 
 function changeDifficulty (numOfDifficulty, curBoss, stackGreenCards, stackOrangeCards, stackBlueCards) {
@@ -77,7 +81,28 @@ function changeDifficulty (numOfDifficulty, curBoss, stackGreenCards, stackOrang
   return retObj;
 }
 
-function takeCard (currentOfGameInf) {
+function takeCardInStage (currentOfGameInf, nameStage) {
+  let numOfColor = 0; //0 - зеленый, 1 - оранжевый, 2 - синий
+  let nameStackOfCards = '';
+
+  numOfColor = getRandomIntInclusive(0,2);
+
+  if (numOfColor === 0) {
+    nameStackOfCards = 'numOfGreenCard';
+  } else if (numOfColor === 1) {
+    nameStackOfCards = 'numOfOrangeCard';
+  } else {
+    nameStackOfCards = 'numOfBlueCard';
+  };
+
+  if (currentOfGameInf[nameStackOfCards][nameStage] === 0) {
+    takeCardInStage (currentOfGameInf, nameStage);
+  } else {
+    return nameStackOfCards;
+  }
+}
+
+function takeCardAndStat (currentOfGameInf) {
   let retObj = {
     blueStack: [],
     orandeStack: [],
@@ -100,7 +125,41 @@ function takeCard (currentOfGameInf) {
     }
   };
 
+  let nameStackOfCards = '';
+  let nameStage = '';
+  let curCard = [];
+
+  retObj = currentOfGameInf;
   
+  const firstStageCards = retObj.numOfBlueCard.firstStage + retObj.numOfGreenCard.firstStage + retObj.numOfOrangeCard.firstStage;
+  const secondStageCards = retObj.numOfBlueCard.secondStage + retObj.numOfGreenCard.secondStage + retObj.numOfOrangeCard.secondStage;
+  const thirdStageCards = retObj.numOfBlueCard.thirdStage + retObj.numOfGreenCard.thirdStage + retObj.numOfOrangeCard.thirdStage;
+
+  if (firstStageCards > 0) {
+    nameStage = 'firstStage';
+    nameStackOfCards = takeCardInStage (retObj, nameStage);
+  } else if (secondStageCards > 0) {
+    nameStage = 'secondStage';
+    nameStackOfCards = takeCardInStage (retObj, nameStage);
+  } else if (thirdStageCards > 0) {
+    nameStage = 'thirdStage';
+    nameStackOfCards = takeCardInStage (retObj, nameStage);
+  } else {
+    alert('Это была последняя карта')
+    return retObj;
+  }
+
+  retObj[nameStackOfCards][nameStage] = retObj[nameStackOfCards][nameStage] - 1;
+  
+  if (nameStackOfCards === 'numOfGreenCard') {
+    curCard = retObj.greenStack.pop();
+  } else if (nameStackOfCards === 'numOfOrangeCard') {
+    curCard = retObj.orandeStack.pop();
+  } else {
+    curCard = retObj.blueStack.pop();
+  }
+
+  retObj.adrImgOfCard = curCard.cardFace;
 
   return retObj;
 }
@@ -110,5 +169,9 @@ let objCurrentGame = {};
 
 currentBoss = changeBoss(0, ancientsData)
 console.log(currentBoss);
+
 objCurrentGame = changeDifficulty(1, currentBoss, greenCards, orangeCards, blueCards);
+console.log(objCurrentGame);
+
+objCurrentGame = takeCardAndStat(objCurrentGame);
 console.log(objCurrentGame);
