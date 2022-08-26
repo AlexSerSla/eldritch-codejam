@@ -67,13 +67,14 @@ h2 {
 
 .levels {
     margin: 10px auto;
+    transition: 0.5s;
 }
 
 .btn {
     margin: auto 10px;
 }
 
-.btn:active {
+.normal-lvl-btn:active {
     border: 1px solid red;
 }
 
@@ -83,6 +84,7 @@ h2 {
 
     display: flex;
     justify-content: space-around;
+    transition: 0.5s;
 }
 
 .stack {

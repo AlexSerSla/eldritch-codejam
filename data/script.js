@@ -97,6 +97,7 @@ function takeCardInStage (currentOfGameInf, nameStage) {
 
   if (currentOfGameInf[nameStackOfCards][nameStage] === 0) {
     takeCardInStage (currentOfGameInf, nameStage);
+    return nameStackOfCards;
   } else {
     return nameStackOfCards;
   }
@@ -149,6 +150,9 @@ function takeCardAndStat (currentOfGameInf) {
     return retObj;
   }
 
+  console.log(nameStage);
+  console.log(nameStackOfCards);
+
   retObj[nameStackOfCards][nameStage] = retObj[nameStackOfCards][nameStage] - 1;
   
   if (nameStackOfCards === 'numOfGreenCard') {
@@ -167,11 +171,115 @@ function takeCardAndStat (currentOfGameInf) {
 let currentBoss;
 let objCurrentGame = {};
 
-currentBoss = changeBoss(0, ancientsData)
-console.log(currentBoss);
+const azathothBoss = document.querySelector('.azathoth-card');
+const cthulthuBoss = document.querySelector('.cthulthu-card');
+const iogSothothBoss = document.querySelector('.iogSothoth-card');
+const shubNiggurathBoss = document.querySelector('.shubNiggurath-card');
 
+const levelsBtns = document.querySelector('.levels');
+const packCardsDiv = document.querySelector('.pack-card');
+
+const veryEasyLvl = document.querySelector('.very-easy-lvl-btn');
+const easyLvl = document.querySelector('.easy-lvl-btn');
+const normalLvl = document.querySelector('.normal-lvl-btn');
+const hardLvl = document.querySelector('.hard-lvl-btn');
+const veryHardLvl = document.querySelector('.very-hard-lvl-btn');
+
+const firstGreenCards = document.querySelector('.first-green');
+const firstOrangeCards = document.querySelector('.first-orange');
+const firstBlueCards = document.querySelector('.first-blue');
+const secondGreenCards = document.querySelector('.second-green');
+const secondOrangeCards = document.querySelector('.second-orange');
+const secondBlueCards = document.querySelector('.second-blue');
+const thirdGreenCards = document.querySelector('.third-green');
+const thirdOrangeCards = document.querySelector('.third-orange');
+const thirdBlueCards = document.querySelector('.third-blue');
+
+const closeCardBtn = document.querySelector('.close-card-btn');
+const openCard = document.querySelector('.open-card');
+
+levelsBtns.style.opacity = '0';
+packCardsDiv.style.opacity = '0';
+
+azathothBoss.addEventListener('click', () => {
+  currentBoss = changeBoss(0, ancientsData);
+  levelsBtns.style.opacity = '1';
+
+  cthulthuBoss.style.opacity = '0';
+  iogSothothBoss.style.opacity = '0';
+  shubNiggurathBoss.style.opacity = '0';
+});
+cthulthuBoss.addEventListener('click', () => {
+  currentBoss = changeBoss(1, ancientsData);
+  levelsBtns.style.opacity = '1';
+
+  azathothBoss.style.opacity = '0';
+  iogSothothBoss.style.opacity = '0';
+  shubNiggurathBoss.style.opacity = '0';
+});
+iogSothothBoss.addEventListener('click', () => {
+  currentBoss = changeBoss(2, ancientsData);
+  levelsBtns.style.opacity = '1';
+  
+  azathothBoss.style.opacity = '0';
+  cthulthuBoss.style.opacity = '0';
+  shubNiggurathBoss.style.opacity = '0';
+});
+shubNiggurathBoss.addEventListener('click', () => {
+  currentBoss = changeBoss(3, ancientsData);
+  levelsBtns.style.opacity = '1';
+  
+  azathothBoss.style.opacity = '0';
+  cthulthuBoss.style.opacity = '0';
+  iogSothothBoss.style.opacity = '0';
+});
+
+normalLvl.addEventListener('click', () => {
+  objCurrentGame = changeDifficulty(1, currentBoss, greenCards, orangeCards, blueCards);
+  packCardsDiv.style.opacity = '1';
+
+  veryEasyLvl.style.opacity = '0';
+  easyLvl.style.opacity = '0';
+  hardLvl.style.opacity = '0';
+  veryHardLvl.style.opacity = '0';
+
+  firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
+  secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
+  thirdGreenCards.textContent = `${objCurrentGame.numOfGreenCard.thirdStage}`;
+
+  firstOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.firstStage}`;
+  secondOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.secondStage}`;
+  thirdOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.thirdStage}`;
+
+  firstBlueCards.textContent = `${objCurrentGame.numOfBlueCard.firstStage}`;
+  secondBlueCards.textContent = `${objCurrentGame.numOfBlueCard.secondStage}`;
+  thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
+});
+
+closeCardBtn.addEventListener('click', () => {
+  objCurrentGame = takeCardAndStat(objCurrentGame);
+  
+  openCard.style.background = `url(${objCurrentGame.adrImgOfCard})`;
+
+  //background: url(../assets/mythicCardBackground.png);
+
+  firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
+  secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
+  thirdGreenCards.textContent = `${objCurrentGame.numOfGreenCard.thirdStage}`;
+
+  firstOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.firstStage}`;
+  secondOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.secondStage}`;
+  thirdOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.thirdStage}`;
+
+  firstBlueCards.textContent = `${objCurrentGame.numOfBlueCard.firstStage}`;
+  secondBlueCards.textContent = `${objCurrentGame.numOfBlueCard.secondStage}`;
+  thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
+});
+
+/*
 objCurrentGame = changeDifficulty(1, currentBoss, greenCards, orangeCards, blueCards);
 console.log(objCurrentGame);
 
 objCurrentGame = takeCardAndStat(objCurrentGame);
 console.log(objCurrentGame);
+*/
