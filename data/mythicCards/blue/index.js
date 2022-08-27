@@ -1,4 +1,4 @@
-import blueCardsAssets from '../../../assets/MythicCards/blue';
+import blueCardsAssets from '../../../assets/MythicCards/blue/indexNWP.js';
 
 const cardsData = [
   {
