@@ -144,7 +144,7 @@ h2 {
     width: 40vw;
     max-width: 278px;
 
-    background: url(../assets/MythicCards/blue/blue3.png);
+    background: none;
     display: inline-block;
     background-repeat: round; 
 }
