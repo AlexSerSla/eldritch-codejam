@@ -28,6 +28,8 @@ h2 {
 
 .card-img {
     width: 20%;   
+    max-width: 443px;
+    max-height: 574px;
     background: none; 
 }
 
@@ -40,6 +42,8 @@ h2 {
 }
 
 .azathoth-card {
+    max-width: 443px;
+    max-height: 574px;
     background-image: url(../assets/Ancients/Azathoth.png);
     background-repeat: round;   
 }
@@ -120,12 +124,14 @@ h2 {
 }
 
 .close-card-btn {
-    height: 80%;
-    width: 285px;
+    height: 50vh;
+    max-height: 419px;
+    width: 20vw;
+    max-width: 285px;
 
-    background: none;
+    
     background: url(../assets/mythicCardBackground.png);
-    background-repeat: no-repeat;
+    background-repeat: round; 
 }
 
 .close-card-btn:hover {
@@ -133,10 +139,13 @@ h2 {
 }
 
 .open-card{
-    height: 80%;
-    width: 285px;
+    height: 50vh;
+    max-height: 407px;
+    width: 40vw;
+    max-width: 278px;
 
-    background: none;
-    background-repeat: round;
+    background: url(../assets/MythicCards/blue/blue3.png);
+    display: inline-block;
+    background-repeat: round; 
 }
 
