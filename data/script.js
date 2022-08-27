@@ -504,7 +504,7 @@ veryHardLvl.addEventListener('click', () => {
 closeCardBtn.addEventListener('click', () => {
   objCurrentGame = takeCardAndStat(objCurrentGame);
   
-  openCard.style.background = `url(${objCurrentGame.adrImgOfCard})`;
+  openCard.style.backgroundImage = `url(${objCurrentGame.adrImgOfCard})`;
   
   firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
   secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
