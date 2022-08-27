@@ -35,6 +35,111 @@ function changeBoss (numOfBoss, bossesData) {
   return bossesData[numOfBoss];
 }
 
+function delDifficultyCards (nameForDelDifficulty, stackGreenCards, stackOrangeCards, stackBlueCards) {
+  let stackSortCadrs = {
+    stackBlueCards: [],
+    stackGreenCards: [],
+    stackOrangeCards: []
+  }
+
+  for (const item of stackGreenCards) {
+    if (item.difficulty !== nameForDelDifficulty) {
+      stackSortCadrs.stackGreenCards.push(item);
+    }
+  }
+  for (const item of stackOrangeCards) {
+    if (item.difficulty !== nameForDelDifficulty) {
+      stackSortCadrs.stackOrangeCards.push(item);
+    }
+  }
+  for (const item of stackBlueCards) {
+    if (item.difficulty !== nameForDelDifficulty) {
+      stackSortCadrs.stackBlueCards.push(item);
+    }
+  }
+
+  return stackSortCadrs;
+}
+
+function addDifficultyCards (nameForAddDifficulty, stackGreenCards, stackOrangeCards, stackBlueCards, numOfBlueCard, numOfOrandeCard, numOfGreenCard) {
+  let stackSortCadrs = {
+    stackBlueCards: [],
+    stackGreenCards: [],
+    stackOrangeCards: []
+  }
+
+  let stackNormalCards = {
+    stackBlueCards: [],
+    stackGreenCards: [],
+    stackOrangeCards: []
+  }
+
+  for (const item of stackGreenCards) {
+    if (item.difficulty === 'normal') {
+      stackNormalCards.stackGreenCards.push(item);
+    }
+  }
+  for (const item of stackOrangeCards) {
+    if (item.difficulty === 'normal') {
+      stackNormalCards.stackOrangeCards.push(item);
+    }
+  }
+  for (const item of stackBlueCards) {
+    if (item.difficulty === 'normal') {
+      stackNormalCards.stackBlueCards.push(item);
+    }
+  }
+
+  for (const item of stackGreenCards) {
+    if (item.difficulty === nameForAddDifficulty) {
+      stackSortCadrs.stackGreenCards.push(item);
+    }
+  }
+  for (const item of stackOrangeCards) {
+    if (item.difficulty === nameForAddDifficulty) {
+      stackSortCadrs.stackOrangeCards.push(item);
+    }
+  }
+  for (const item of stackBlueCards) {
+    if (item.difficulty === nameForAddDifficulty) {
+      stackSortCadrs.stackBlueCards.push(item);
+    }
+  }
+
+  console.log(stackSortCadrs.stackBlueCards.length);
+  console.log(numOfBlueCard);
+  console.log(stackSortCadrs.stackGreenCards.length);
+  console.log(numOfGreenCard);
+  console.log(stackSortCadrs.stackOrangeCards.length);
+  console.log(numOfOrandeCard);
+
+  if (stackSortCadrs.stackBlueCards.length < numOfBlueCard) {
+    const requiredOfBlueCards = getStackRandomCards(stackNormalCards.stackBlueCards, (numOfBlueCard - stackSortCadrs.stackBlueCards.length));
+
+    for (let i = 0; i < requiredOfBlueCards.length; i++) {
+      stackSortCadrs.stackBlueCards.push(requiredOfBlueCards[i]);     
+    }
+  }
+  if (stackSortCadrs.stackGreenCards.length < numOfGreenCard) {
+    const requiredOfGreenCards = getStackRandomCards(stackNormalCards.stackGreenCards, (numOfGreenCard - stackSortCadrs.stackGreenCards.length));
+
+    for (let i = 0; i < requiredOfGreenCards.length; i++) {
+      stackSortCadrs.stackGreenCards.push(requiredOfGreenCards[i]);     
+    }
+  }
+  if (stackSortCadrs.stackOrangeCards.length < numOfOrandeCard) {
+    const requiredOfOrangeCards = getStackRandomCards(stackNormalCards.stackOrangeCards, (numOfOrandeCard - stackSortCadrs.stackOrangeCards.length));
+
+    for (let i = 0; i < requiredOfOrangeCards.length; i++) {
+      stackSortCadrs.stackOrangeCards.push(requiredOfOrangeCards[i]);     
+    }
+  }
+
+  console.log(stackSortCadrs);
+
+  return stackSortCadrs;
+}
+
 function changeDifficulty (numOfDifficulty, curBoss, stackGreenCards, stackOrangeCards, stackBlueCards) {
   const numOfBlueCard = (curBoss.firstStage.blueCards + curBoss.secondStage.blueCards + curBoss.thirdStage.blueCards);
   const numOfOrandeCard = (curBoss.firstStage.brownCards + curBoss.secondStage.brownCards + curBoss.thirdStage.brownCards);
@@ -45,6 +150,9 @@ function changeDifficulty (numOfDifficulty, curBoss, stackGreenCards, stackOrang
     orandeStack: [],
     greenStack: [],
     adrImgOfCard: '',
+    colorHeaderFirstStage: 'white',
+    colorHeaderSecondStage: 'white',
+    colorHeaderThirdStage: 'white',
     numOfBlueCard: {
       firstStage: 0,
       secondStage: 0,
@@ -62,9 +170,7 @@ function changeDifficulty (numOfDifficulty, curBoss, stackGreenCards, stackOrang
     }
   };
 
-  retObj.blueStack = getStackRandomCards(stackBlueCards, numOfBlueCard);
-  retObj.greenStack = getStackRandomCards(stackGreenCards, numOfGreenCard);
-  retObj.orandeStack = getStackRandomCards(stackOrangeCards, numOfOrandeCard);
+  let finallyStasksCards = {};
 
   retObj.numOfBlueCard.firstStage = curBoss.firstStage.blueCards;
   retObj.numOfBlueCard.secondStage = curBoss.secondStage.blueCards;
@@ -77,6 +183,38 @@ function changeDifficulty (numOfDifficulty, curBoss, stackGreenCards, stackOrang
   retObj.numOfOrangeCard.firstStage = curBoss.firstStage.brownCards;
   retObj.numOfOrangeCard.secondStage = curBoss.secondStage.brownCards;
   retObj.numOfOrangeCard.thirdStage = curBoss.thirdStage.brownCards;
+
+  //numOfDifficulty: 0 - очень легкий, 1 - легкий, 2 - средний, 3 - высокий, 4 - очень высокий
+  
+  if (numOfDifficulty === 1) {
+    finallyStasksCards = delDifficultyCards('hard', stackGreenCards, stackOrangeCards, stackBlueCards);
+
+    retObj.blueStack = getStackRandomCards(finallyStasksCards.stackBlueCards, numOfBlueCard);
+    retObj.greenStack = getStackRandomCards(finallyStasksCards.stackGreenCards, numOfGreenCard);
+    retObj.orandeStack = getStackRandomCards(finallyStasksCards.stackOrangeCards, numOfOrandeCard);
+  } else if (numOfDifficulty === 3) {
+    finallyStasksCards = delDifficultyCards('easy', stackGreenCards, stackOrangeCards, stackBlueCards);
+
+    retObj.blueStack = getStackRandomCards(finallyStasksCards.stackBlueCards, numOfBlueCard);
+    retObj.greenStack = getStackRandomCards(finallyStasksCards.stackGreenCards, numOfGreenCard);
+    retObj.orandeStack = getStackRandomCards(finallyStasksCards.stackOrangeCards, numOfOrandeCard);
+  } else if (numOfDifficulty === 0) {
+    finallyStasksCards = addDifficultyCards('easy', stackGreenCards, stackOrangeCards, stackBlueCards, numOfBlueCard, numOfOrandeCard, numOfGreenCard);
+
+    retObj.blueStack = getStackRandomCards(finallyStasksCards.stackBlueCards, numOfBlueCard);
+    retObj.greenStack = getStackRandomCards(finallyStasksCards.stackGreenCards, numOfGreenCard);
+    retObj.orandeStack = getStackRandomCards(finallyStasksCards.stackOrangeCards, numOfOrandeCard);
+  } else if (numOfDifficulty === 4) {
+    finallyStasksCards = addDifficultyCards('hard', stackGreenCards, stackOrangeCards, stackBlueCards, numOfBlueCard, numOfOrandeCard, numOfGreenCard);
+
+    retObj.blueStack = getStackRandomCards(finallyStasksCards.stackBlueCards, numOfBlueCard);
+    retObj.greenStack = getStackRandomCards(finallyStasksCards.stackGreenCards, numOfGreenCard);
+    retObj.orandeStack = getStackRandomCards(finallyStasksCards.stackOrangeCards, numOfOrandeCard);
+  } else {
+    retObj.blueStack = getStackRandomCards(stackBlueCards, numOfBlueCard);
+    retObj.greenStack = getStackRandomCards(stackGreenCards, numOfGreenCard);
+    retObj.orandeStack = getStackRandomCards(stackOrangeCards, numOfOrandeCard);
+  }
 
   return retObj;
 }
@@ -96,7 +234,7 @@ function takeCardInStage (currentOfGameInf, nameStage) {
   };
 
   if (currentOfGameInf[nameStackOfCards][nameStage] === 0) {
-    takeCardInStage (currentOfGameInf, nameStage);
+    nameStackOfCards = takeCardInStage (currentOfGameInf, nameStage);
     return nameStackOfCards;
   } else {
     return nameStackOfCards;
@@ -109,6 +247,9 @@ function takeCardAndStat (currentOfGameInf) {
     orandeStack: [],
     greenStack: [],
     adrImgOfCard: '',
+    colorHeaderFirstStage: 'white',
+    colorHeaderSecondStage: 'white',
+    colorHeaderThirdStage: 'white',
     numOfBlueCard: {
       firstStage: 0,
       secondStage: 0,
@@ -146,12 +287,21 @@ function takeCardAndStat (currentOfGameInf) {
     nameStage = 'thirdStage';
     nameStackOfCards = takeCardInStage (retObj, nameStage);
   } else {
-    alert('Это была последняя карта')
+    retObj.colorHeaderThirdStage = 'red';
+    //alert('Это была последняя карта')
     return retObj;
   }
 
-  console.log(nameStage);
-  console.log(nameStackOfCards);
+  if (firstStageCards === 0) {
+    retObj.colorHeaderFirstStage = 'red';
+  }
+  if (secondStageCards === 0) {
+    retObj.colorHeaderSecondStage = 'red';
+  }
+
+
+  //console.log(nameStage);
+  //console.log(nameStackOfCards);
 
   retObj[nameStackOfCards][nameStage] = retObj[nameStackOfCards][nameStage] - 1;
   
@@ -198,8 +348,15 @@ const thirdBlueCards = document.querySelector('.third-blue');
 const closeCardBtn = document.querySelector('.close-card-btn');
 const openCard = document.querySelector('.open-card');
 
+const headerFirstStage = document.querySelector('.item-header-stage-1');
+const headerSecondStage = document.querySelector('.item-header-stage-2');
+const headerThirdStage = document.querySelector('.item-header-stage-3');
+
+const newGameBtn = document.querySelector('.new-game-btn');
+
 levelsBtns.style.opacity = '0';
 packCardsDiv.style.opacity = '0';
+newGameBtn.style.opacity = '0';
 
 azathothBoss.addEventListener('click', () => {
   currentBoss = changeBoss(0, ancientsData);
@@ -235,7 +392,7 @@ shubNiggurathBoss.addEventListener('click', () => {
 });
 
 normalLvl.addEventListener('click', () => {
-  objCurrentGame = changeDifficulty(1, currentBoss, greenCards, orangeCards, blueCards);
+  objCurrentGame = changeDifficulty(2, currentBoss, greenCards, orangeCards, blueCards);
   packCardsDiv.style.opacity = '1';
 
   veryEasyLvl.style.opacity = '0';
@@ -256,12 +413,14 @@ normalLvl.addEventListener('click', () => {
   thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
 });
 
-closeCardBtn.addEventListener('click', () => {
-  objCurrentGame = takeCardAndStat(objCurrentGame);
-  
-  openCard.style.background = `url(${objCurrentGame.adrImgOfCard})`;
+easyLvl.addEventListener('click', () => {
+  objCurrentGame = changeDifficulty(1, currentBoss, greenCards, orangeCards, blueCards);
+  packCardsDiv.style.opacity = '1';
 
-  //background: url(../assets/mythicCardBackground.png);
+  veryEasyLvl.style.opacity = '0';
+  normalLvl.style.opacity = '0';
+  hardLvl.style.opacity = '0';
+  veryHardLvl.style.opacity = '0';
 
   firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
   secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
@@ -276,10 +435,98 @@ closeCardBtn.addEventListener('click', () => {
   thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
 });
 
-/*
-objCurrentGame = changeDifficulty(1, currentBoss, greenCards, orangeCards, blueCards);
-console.log(objCurrentGame);
+veryEasyLvl.addEventListener('click', () => {
+  objCurrentGame = changeDifficulty(0, currentBoss, greenCards, orangeCards, blueCards);
+  packCardsDiv.style.opacity = '1';
 
-objCurrentGame = takeCardAndStat(objCurrentGame);
-console.log(objCurrentGame);
-*/
+  easyLvl.style.opacity = '0';
+  normalLvl.style.opacity = '0';
+  hardLvl.style.opacity = '0';
+  veryHardLvl.style.opacity = '0';
+
+  firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
+  secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
+  thirdGreenCards.textContent = `${objCurrentGame.numOfGreenCard.thirdStage}`;
+
+  firstOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.firstStage}`;
+  secondOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.secondStage}`;
+  thirdOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.thirdStage}`;
+
+  firstBlueCards.textContent = `${objCurrentGame.numOfBlueCard.firstStage}`;
+  secondBlueCards.textContent = `${objCurrentGame.numOfBlueCard.secondStage}`;
+  thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
+});
+
+hardLvl.addEventListener('click', () => {
+  objCurrentGame = changeDifficulty(3, currentBoss, greenCards, orangeCards, blueCards);
+  packCardsDiv.style.opacity = '1';
+
+  veryEasyLvl.style.opacity = '0';
+  normalLvl.style.opacity = '0';
+  easyLvl.style.opacity = '0';
+  veryHardLvl.style.opacity = '0';
+
+  firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
+  secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
+  thirdGreenCards.textContent = `${objCurrentGame.numOfGreenCard.thirdStage}`;
+
+  firstOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.firstStage}`;
+  secondOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.secondStage}`;
+  thirdOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.thirdStage}`;
+
+  firstBlueCards.textContent = `${objCurrentGame.numOfBlueCard.firstStage}`;
+  secondBlueCards.textContent = `${objCurrentGame.numOfBlueCard.secondStage}`;
+  thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
+});
+
+veryHardLvl.addEventListener('click', () => {
+  objCurrentGame = changeDifficulty(4, currentBoss, greenCards, orangeCards, blueCards);
+  packCardsDiv.style.opacity = '1';
+
+  easyLvl.style.opacity = '0';
+  normalLvl.style.opacity = '0';
+  hardLvl.style.opacity = '0';
+  veryEasyLvl.style.opacity = '0';
+
+  firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
+  secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
+  thirdGreenCards.textContent = `${objCurrentGame.numOfGreenCard.thirdStage}`;
+
+  firstOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.firstStage}`;
+  secondOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.secondStage}`;
+  thirdOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.thirdStage}`;
+
+  firstBlueCards.textContent = `${objCurrentGame.numOfBlueCard.firstStage}`;
+  secondBlueCards.textContent = `${objCurrentGame.numOfBlueCard.secondStage}`;
+  thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
+});
+
+closeCardBtn.addEventListener('click', () => {
+  objCurrentGame = takeCardAndStat(objCurrentGame);
+  
+  openCard.style.background = `url(${objCurrentGame.adrImgOfCard})`;
+  
+  firstGreenCards.textContent = `${objCurrentGame.numOfGreenCard.firstStage}`;
+  secondGreenCards.textContent = `${objCurrentGame.numOfGreenCard.secondStage}`;
+  thirdGreenCards.textContent = `${objCurrentGame.numOfGreenCard.thirdStage}`;
+
+  firstOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.firstStage}`;
+  secondOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.secondStage}`;
+  thirdOrangeCards.textContent = `${objCurrentGame.numOfOrangeCard.thirdStage}`;
+
+  firstBlueCards.textContent = `${objCurrentGame.numOfBlueCard.firstStage}`;
+  secondBlueCards.textContent = `${objCurrentGame.numOfBlueCard.secondStage}`;
+  thirdBlueCards.textContent = `${objCurrentGame.numOfBlueCard.thirdStage}`;
+
+  headerFirstStage.style.color = objCurrentGame.colorHeaderFirstStage;
+  headerSecondStage.style.color = objCurrentGame.colorHeaderSecondStage;
+  headerThirdStage.style.color = objCurrentGame.colorHeaderThirdStage;
+
+  if (objCurrentGame.colorHeaderThirdStage === 'red') {
+    newGameBtn.style.opacity = '1';
+  }
+});
+
+newGameBtn.addEventListener('click', () => {
+  location.reload();
+});

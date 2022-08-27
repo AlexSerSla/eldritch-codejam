@@ -17,12 +17,6 @@ h2 {
     color: white;
 }
 
-/*
-.container {
-    min-height: 100%;
-    width: 100%;
-}*/
-
 .bosses-card {
     width: 100%;
     min-height: 30vh;
@@ -87,6 +81,11 @@ h2 {
     transition: 0.5s;
 }
 
+.stack-cards {
+    display: flex;
+    flex-direction: column;
+}
+
 .stack {
     min-width: 150px;
     display: flex;
@@ -116,13 +115,17 @@ h2 {
     background-color: blue;
 }
 
+.new-game-btn {
+    margin-top: 20px;
+}
+
 .close-card-btn {
     height: 80%;
     width: 285px;
 
     background: none;
     background: url(../assets/mythicCardBackground.png);
-    background-repeat: round;
+    background-repeat: no-repeat;
 }
 
 .close-card-btn:hover {
